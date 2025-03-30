@@ -1,0 +1,3084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Inventory Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Login Page Styles */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+       
+        .login-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+       
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+       
+        .login-header h2 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+       
+        .login-header p {
+            color: #7f8c8d;
+        }
+       
+        .login-form-group {
+            margin-bottom: 1rem;
+        }
+       
+        .login-form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+       
+        .login-form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+       
+        .login-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+       
+        .login-btn:hover {
+            background-color: #2980b9;
+        }
+       
+        .login-error {
+            color: #e74c3c;
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
+        }
+
+        /* Existing Inventory System Styles */
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --light-gray: #ecf0f1;
+            --dark-gray: #7f8c8d;
+        }
+       
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+       
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+       
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 20px 0;
+        }
+       
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+       
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+       
+        .sidebar-menu li {
+            padding: 10px 20px;
+            border-left: 4px solid transparent;
+            transition: all 0.3s;
+        }
+       
+        .sidebar-menu li:hover {
+            background-color: rgba(255,255,255,0.1);
+            border-left: 4px solid var(--primary-color);
+        }
+       
+        .sidebar-menu li.active {
+            background-color: rgba(255,255,255,0.1);
+            border-left: 4px solid var(--primary-color);
+        }
+       
+        .sidebar-menu li a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+       
+        .sidebar-menu li i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+       
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+       
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+       
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+       
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+       
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+        }
+       
+        /* Dashboard Cards */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+       
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            transition: transform 0.3s;
+        }
+       
+        .card:hover {
+            transform: translateY(-5px);
+        }
+       
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+       
+        .card-title {
+            font-size: 16px;
+            color: var(--dark-gray);
+        }
+       
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+       
+        .card-value {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+       
+        .card-footer {
+            font-size: 14px;
+            color: var(--dark-gray);
+        }
+       
+        /* Search and Filters */
+        .search-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+       
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+       
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+       
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--dark-gray);
+        }
+       
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+       
+        .filter-group label {
+            font-size: 14px;
+            color: var(--dark-gray);
+        }
+       
+        .filter-group select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: white;
+        }
+       
+        /* Inventory Table */
+        .inventory-table {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+       
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+       
+        .table-actions {
+            display: flex;
+            gap: 10px;
+        }
+       
+        .btn {
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+       
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+       
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+       
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+       
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+       
+        .btn i {
+            margin-right: 5px;
+        }
+       
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+       
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--light-gray);
+        }
+       
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+       
+        .product-image {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+       
+        .stock-low {
+            color: var(--warning-color);
+            font-weight: 500;
+        }
+       
+        .stock-critical {
+            color: var(--danger-color);
+            font-weight: 500;
+        }
+       
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+       
+        .badge-success {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: var(--success-color);
+        }
+       
+        .badge-warning {
+            background-color: rgba(243, 156, 18, 0.1);
+            color: var(--warning-color);
+        }
+       
+        .badge-danger {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--danger-color);
+        }
+       
+        .badge-primary {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--primary-color);
+        }
+       
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--dark-gray);
+            margin: 0 5px;
+            transition: color 0.3s;
+        }
+       
+        .action-btn:hover {
+            color: var(--primary-color);
+        }
+       
+        /* Content Sections */
+        .content-section {
+            display: none;
+        }
+       
+        .content-section.active {
+            display: block;
+        }
+       
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+       
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+       
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+       
+        .close-modal {
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark-gray);
+        }
+       
+        /* Settings Form */
+        .settings-form {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+       
+        .form-group {
+            margin-bottom: 20px;
+        }
+       
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+       
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+       
+        .form-group textarea {
+            min-height: 100px;
+        }
+       
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+       
+        /* Discount Styles */
+        .discount-price {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+       
+        .original-price {
+            text-decoration: line-through;
+            color: #95a5a6;
+        }
+       
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+           
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+           
+            .dashboard-cards {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+       
+        @media (max-width: 480px) {
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+           
+            .table-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+           
+            .btn {
+                width: 100%;
+                justify-content: center;
+                margin-bottom: 5px;
+            }
+           
+            .search-filter {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <h2>Invent Pro</h2>
+                <p>Smart Inventory Management System</p>
+            </div>
+           
+            <form id="loginForm">
+                <div class="login-form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required>
+                </div>
+               
+                <div class="login-form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+               
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+           
+            <div id="loginError" class="login-error"></div>
+        </div>
+    </div>
+
+    <!-- Main Application (initially hidden) -->
+    <div id="mainApp" style="display: none;">
+        <div class="container">
+            <!-- Sidebar Navigation -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h2>Invent Pro</h2>
+                </div>
+                <ul class="sidebar-menu">
+                    <li id="dashboardLink" class="active">
+                        <a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    </li>
+                    <li id="inventoryLink">
+                        <a href="#"><i class="fas fa-boxes"></i> Inventory</a>
+                    </li>
+                    <li id="purchaseLink">
+                        <a href="#"><i class="fas fa-shopping-cart"></i> Purchase Orders</a>
+                    </li>
+                    <li id="suppliersLink">
+                        <a href="#"><i class="fas fa-truck"></i> Suppliers</a>
+                    </li>
+                    <li id="analyticsLink">
+                        <a href="#"><i class="fas fa-chart-line"></i> Analytics</a>
+                    </li>
+                    <li id="settingsLink">
+                        <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                    </li>
+                </ul>
+            </div>
+           
+            <!-- Main Content Area -->
+            <div class="main-content">
+                <!-- Dashboard Content -->
+                <div id="dashboardContent" class="content-section active">
+                    <div class="header">
+                        <h1 class="page-title">Dashboard</h1>
+                        <div class="user-profile">
+                            <span>Admin User</span>
+                            <div class="user-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <!-- Dashboard Cards -->
+                    <div class="dashboard-cards">
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title">Total Products</span>
+                                <div class="card-icon" style="background-color: #3498db;">
+                                    <i class="fas fa-box"></i>
+                                </div>
+                            </div>
+                            <div id="totalProducts" class="card-value">Loading...</div>
+                            <div class="card-footer" id="productsChange">Loading...</div>
+                        </div>
+                       
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title">Low Stock</span>
+                                <div class="card-icon" style="background-color: #f39c12;">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                            </div>
+                            <div id="lowStockItems" class="card-value">Loading...</div>
+                            <div class="card-footer">Items need reordering</div>
+                        </div>
+                       
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title">Pending Orders</span>
+                                <div class="card-icon" style="background-color: #e74c3c;">
+                                    <i class="fas fa-clipboard-list"></i>
+                                </div>
+                            </div>
+                            <div id="pendingOrders" class="card-value">Loading...</div>
+                            <div class="card-footer" id="newOrdersToday">Loading...</div>
+                        </div>
+                       
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title">Expiring Soon</span>
+                                <div class="card-icon" style="background-color: #e67e22;">
+                                    <i class="fas fa-hourglass-end"></i>
+                                </div>
+                            </div>
+                            <div id="expiringProducts" class="card-value">Loading...</div>
+                            <div class="card-footer" id="expiringDetails">Loading...</div>
+                        </div>
+                    </div>
+                   
+                    <!-- Recent Activity Section -->
+                    <div class="inventory-table">
+                        <div class="table-header">
+                            <h3>Recent Activity</h3>
+                        </div>
+                        <table id="activityTable">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Activity</th>
+                                    <th>User</th>
+                                    <th>Details</th>
+                                </tr>
+                            </thead>
+                            <tbody id="activityBody">
+                                <!-- Activity data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+               
+                <!-- Inventory Content -->
+                <div id="inventoryContent" class="content-section">
+                    <div class="header">
+                        <h1 class="page-title">Inventory Management</h1>
+                        <div class="user-profile">
+                            <span>Admin User</span>
+                            <div class="user-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <!-- Search and Filters -->
+                    <div class="search-filter">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="productSearch" placeholder="Search products...">
+                        </div>
+                        <div class="filter-group">
+                            <label>Category:</label>
+                            <select id="categoryFilter">
+                                <option value="">All Categories</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Wearables">Wearables</option>
+                                <option value="Accessories">Accessories</option>
+                                <option value="Office">Office Supplies</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Stock Status:</label>
+                            <select id="stockFilter">
+                                <option value="">All</option>
+                                <option value="in_stock">In Stock</option>
+                                <option value="low_stock">Low Stock</option>
+                                <option value="out_of_stock">Out of Stock</option>
+                                <option value="expiring_soon">Expiring Soon</option>
+                            </select>
+                        </div>
+                    </div>
+                   
+                    <!-- Inventory Table -->
+                    <div class="inventory-table">
+                        <div class="table-header">
+                            <h3>Product Inventory</h3>
+                            <div class="table-actions">
+                                <button class="btn btn-primary" id="addProductBtn"><i class="fas fa-plus"></i> Add Product</button>
+                                <button class="btn btn-success" id="exportProductsBtn"><i class="fas fa-file-export"></i> Export</button>
+                            </div>
+                        </div>
+                       
+                        <table id="inventoryTable">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>SKU</th>
+                                    <th>Category</th>
+                                    <th>Stock</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventoryBody">
+                                <!-- Inventory data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+               
+                <!-- Purchase Orders Content -->
+                <div id="purchaseContent" class="content-section">
+                    <div class="header">
+                        <h1 class="page-title">Purchase Orders</h1>
+                        <div class="user-profile">
+                            <span>Admin User</span>
+                            <div class="user-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <!-- Search and Filters -->
+                    <div class="search-filter">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="orderSearch" placeholder="Search orders...">
+                        </div>
+                        <div class="filter-group">
+                            <label>Status:</label>
+                            <select id="orderStatusFilter">
+                                <option value="">All Status</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Shipped">Shipped</option>
+                                <option value="Received">Received</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Date Range:</label>
+                            <select id="orderDateFilter">
+                                <option value="">All Time</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="quarter">This Quarter</option>
+                            </select>
+                        </div>
+                    </div>
+                   
+                    <!-- Purchase Orders Table -->
+                    <div class="inventory-table">
+                        <div class="table-header">
+                            <h3>Purchase Orders</h3>
+                            <div class="table-actions">
+                                <button class="btn btn-primary" id="addOrderBtn"><i class="fas fa-plus"></i> New Order</button>
+                                <button class="btn btn-success" id="exportOrdersBtn"><i class="fas fa-file-export"></i> Export</button>
+                            </div>
+                        </div>
+                       
+                        <table id="ordersTable">
+                            <thead>
+                                <tr>
+                                    <th>PO Number</th>
+                                    <th>Supplier</th>
+                                    <th>Date</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersBody">
+                                <!-- Orders data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+               
+                <!-- Suppliers Content -->
+                <div id="suppliersContent" class="content-section">
+                    <div class="header">
+                        <h1 class="page-title">Suppliers</h1>
+                        <div class="user-profile">
+                            <span>Admin User</span>
+                            <div class="user-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <!-- Search and Filters -->
+                    <div class="search-filter">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="supplierSearch" placeholder="Search suppliers...">
+                        </div>
+                        <div class="filter-group">
+                            <label>Category:</label>
+                            <select id="supplierCategoryFilter">
+                                <option value="">All Categories</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Office Supplies">Office Supplies</option>
+                                <option value="Furniture">Furniture</option>
+                                <option value="Miscellaneous">Miscellaneous</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Status:</label>
+                            <select id="supplierStatusFilter">
+                                <option value="">All</option>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                   
+                    <!-- Suppliers Table -->
+                    <div class="inventory-table">
+                        <div class="table-header">
+                            <h3>Supplier List</h3>
+                            <div class="table-actions">
+                                <button class="btn btn-primary" id="addSupplierBtn"><i class="fas fa-plus"></i> Add Supplier</button>
+                                <button class="btn btn-success" id="exportSuppliersBtn"><i class="fas fa-file-export"></i> Export</button>
+                            </div>
+                        </div>
+                       
+                        <table id="suppliersTable">
+                            <thead>
+                                <tr>
+                                    <th>Supplier</th>
+                                    <th>Contact</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th>Products</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="suppliersBody">
+                                <!-- Suppliers data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+               
+                <!-- Analytics Content -->
+                <div id="analyticsContent" class="content-section">
+                    <div class="header">
+                        <h1 class="page-title">Analytics</h1>
+                        <div class="user-profile">
+                            <span>Admin User</span>
+                            <div class="user-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <!-- Analytics Cards -->
+                    <div class="dashboard-cards">
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title">Sales This Month</span>
+                                <div class="card-icon" style="background-color: #3498db;">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                            </div>
+                            <div id="monthlySales" class="card-value">Loading...</div>
+                            <div class="card-footer" id="salesGrowth">Loading...</div>
+                        </div>
+                       
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title">Top Selling Product</span>
+                                <div class="card-icon" style="background-color: #2ecc71;">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                            <div id="topProduct" class="card-value">Loading...</div>
+                            <div class="card-footer" id="topProductSales">Loading...</div>
+                        </div>
+                       
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title">Inventory Value</span>
+                                <div class="card-icon" style="background-color: #9b59b6;">
+                                    <i class="fas fa-boxes"></i>
+                                </div>
+                            </div>
+                            <div id="inventoryValue" class="card-value">Loading...</div>
+                            <div class="card-footer" id="inventoryItems">Loading...</div>
+                        </div>
+                       
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title">Avg. Order Value</span>
+                                <div class="card-icon" style="background-color: #f39c12;">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                            </div>
+                            <div id="avgOrderValue" class="card-value">Loading...</div>
+                            <div class="card-footer" id="orderGrowth">Loading...</div>
+                        </div>
+                    </div>
+                   
+                    <!-- Charts Section -->
+                    <div class="inventory-table" style="margin-bottom: 20px;">
+                        <div class="table-header">
+                            <h3>Sales Trends</h3>
+                        </div>
+                        <div style="padding: 20px; text-align: center; min-height: 300px; background-color: #f8f9fa;">
+                            <canvas id="salesChart" height="300"></canvas>
+                        </div>
+                    </div>
+                   
+                    <div class="inventory-table">
+                        <div class="table-header">
+                            <h3>Inventory Analysis</h3>
+                        </div>
+                        <div style="padding: 20px; text-align: center; min-height: 300px; background-color: #f8f9fa;">
+                            <canvas id="inventoryChart" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+               
+                <!-- Settings Content -->
+                <div id="settingsContent" class="content-section">
+                    <div class="header">
+                        <h1 class="page-title">Settings</h1>
+                        <div class="user-profile">
+                            <span>Admin User</span>
+                            <div class="user-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <!-- Settings Form -->
+                    <div class="settings-form">
+                        <h3 style="margin-top: 0;">System Settings</h3>
+                       
+                        <div class="form-group">
+                            <label for="companyName">Company Name</label>
+                            <input type="text" id="companyName" value="Invent Pro">
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="timezone">Timezone</label>
+                            <select id="timezone">
+                                <option value="UTC-5">Eastern Time (UTC-5)</option>
+                                <option value="UTC-6">Central Time (UTC-6)</option>
+                                <option value="UTC-7">Mountain Time (UTC-7)</option>
+                                <option value="UTC-8" selected>Pacific Time (UTC-8)</option>
+                            </select>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="dateFormat">Date Format</label>
+                            <select id="dateFormat">
+                                <option value="MM/DD/YYYY" selected>MM/DD/YYYY</option>
+                                <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                            </select>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="currency">Currency</label>
+                            <select id="currency">
+                                <option value="INR" selected>Indian Rupee (₹)</option>
+                                <option value="USD">US Dollar ($)</option>
+                                <option value="EUR">Euro (€)</option>
+                                <option value="GBP">British Pound (£)</option>
+                                <option value="JPY">Japanese Yen (¥)</option>
+                            </select>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="lowStockThreshold">Low Stock Threshold</label>
+                            <input type="number" id="lowStockThreshold" value="10">
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="criticalStockThreshold">Critical Stock Threshold</label>
+                            <input type="number" id="criticalStockThreshold" value="5">
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="expiryDaysThreshold">Expiry Days Threshold</label>
+                            <input type="number" id="expiryDaysThreshold" value="30">
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="notificationEmail">Notification Email</label>
+                            <input type="email" id="notificationEmail" value="admin@inventpro.com">
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="systemMessage">System Message</label>
+                            <textarea id="systemMessage">Welcome to Invent Pro! Please keep your inventory up to date.</textarea>
+                        </div>
+                       
+                        <div class="form-actions">
+                            <button class="btn" id="cancelSettings">Cancel</button>
+                            <button class="btn btn-primary" id="saveSettings">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        <!-- Add Product Modal -->
+        <div id="productModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="productModalTitle">Add New Product</h3>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <form id="productForm">
+                    <input type="hidden" id="productId">
+                    <div class="form-group">
+                        <label for="productName">Product Name</label>
+                        <input type="text" id="productName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productSku">SKU</label>
+                        <input type="text" id="productSku" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productCategory">Category</label>
+                        <select id="productCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Wearables">Wearables</option>
+                            <option value="Accessories">Accessories</option>
+                            <option value="Office Supplies">Office Supplies</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="productStock">Current Stock</label>
+                        <input type="number" id="productStock" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productPrice">Price (₹)</label>
+                        <input type="number" step="0.01" id="productPrice" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productExpiry">Expiry Date (optional)</label>
+                        <input type="date" id="productExpiry">
+                    </div>
+                    <div class="form-group">
+                        <label for="productDescription">Description</label>
+                        <textarea id="productDescription"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn" id="cancelProduct">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Product</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+       
+        <!-- Add Order Modal -->
+        <div id="orderModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="orderModalTitle">Create Purchase Order</h3>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <form id="orderForm">
+                    <input type="hidden" id="orderId">
+                    <div class="form-group">
+                        <label for="orderSupplier">Supplier</label>
+                        <select id="orderSupplier" required>
+                            <option value="">Select Supplier</option>
+                            <!-- Suppliers will be loaded here -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="orderDate">Order Date</label>
+                        <input type="date" id="orderDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="orderStatus">Status</label>
+                        <select id="orderStatus" required>
+                            <option value="Pending">Pending</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Shipped">Shipped</option>
+                            <option value="Received">Received</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Order Items</label>
+                        <div id="orderItemsContainer">
+                            <div class="order-item">
+                                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                                    <select class="orderItemProduct" style="flex: 2;" required>
+                                        <option value="">Select Product</option>
+                                        <!-- Products will be loaded here -->
+                                    </select>
+                                    <input type="number" class="orderItemQuantity" placeholder="Qty" style="flex: 1;" required>
+                                    <input type="number" step="0.01" class="orderItemPrice" placeholder="Price" style="flex: 1;" required>
+                                    <button type="button" class="btn btn-danger removeItemBtn" style="flex: 0.5;"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="addOrderItemBtn"><i class="fas fa-plus"></i> Add Item</button>
+                    </div>
+                    <div class="form-group">
+                        <label for="orderNotes">Notes</label>
+                        <textarea id="orderNotes"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn" id="cancelOrder">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Order</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+       
+        <!-- Add Supplier Modal -->
+        <div id="supplierModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="supplierModalTitle">Add New Supplier</h3>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <form id="supplierForm">
+                    <input type="hidden" id="supplierId">
+                    <div class="form-group">
+                        <label for="supplierName">Supplier Name</label>
+                        <input type="text" id="supplierName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="supplierContact">Contact Person</label>
+                        <input type="text" id="supplierContact" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="supplierPhone">Phone</label>
+                        <input type="tel" id="supplierPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="supplierEmail">Email</label>
+                        <input type="email" id="supplierEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="supplierCategory">Category</label>
+                        <select id="supplierCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Office Supplies">Office Supplies</option>
+                            <option value="Furniture">Furniture</option>
+                            <option value="Miscellaneous">Miscellaneous</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="supplierProducts">Products Supplied</label>
+                        <input type="text" id="supplierProducts">
+                    </div>
+                    <div class="form-group">
+                        <label for="supplierStatus">Status</label>
+                        <select id="supplierStatus" required>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="supplierAddress">Address</label>
+                        <textarea id="supplierAddress"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn" id="cancelSupplier">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Supplier</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+       
+        <!-- Confirmation Modal -->
+        <div id="confirmModal" class="modal">
+            <div class="modal-content" style="max-width: 400px;">
+                <div class="modal-header">
+                    <h3 id="confirmModalTitle">Confirm Action</h3>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div style="padding: 20px;">
+                    <p id="confirmModalMessage">Are you sure you want to perform this action?</p>
+                    <div class="form-actions">
+                        <button type="button" class="btn" id="cancelConfirm">Cancel</button>
+                        <button type="button" class="btn btn-danger" id="confirmAction">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Chart.js for analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   
+    <script>
+        // Database simulation using localStorage
+        class InventDB {
+            constructor() {
+                this.initializeDB();
+            }
+           
+            initializeDB() {
+                if (!localStorage.getItem('inventDB')) {
+                    const initialDB = {
+                        settings: {
+                            companyName: "Invent Pro",
+                            timezone: "UTC-8",
+                            dateFormat: "MM/DD/YYYY",
+                            currency: "INR",
+                            lowStockThreshold: 10,
+                            criticalStockThreshold: 5,
+                            expiryDaysThreshold: 30,
+                            notificationEmail: "admin@inventpro.com",
+                            systemMessage: "Welcome to Invent Pro! Please keep your inventory up to date."
+                        },
+                        users: [
+                            {
+                                id: 1,
+                                username: "admin",
+                                password: "admin123",
+                                name: "Admin User",
+                                role: "admin"
+                            },
+                            {
+                                id: 2,
+                                username: "manager",
+                                password: "manager123",
+                                name: "Inventory Manager",
+                                role: "manager"
+                            }
+                        ],
+                        products: [
+                            {
+                                id: 1,
+                                name: "Wireless Headphones",
+                                sku: "WH-1000XM4",
+                                category: "Electronics",
+                                stock: 5,
+                                price: 26249,
+                                expiryDate: "2023-12-31",
+                                description: "Noise cancelling wireless headphones",
+                                createdAt: new Date('2023-05-15').toISOString()
+                            },
+                            {
+                                id: 2,
+                                name: "Bluetooth Speaker",
+                                sku: "BS-XB33",
+                                category: "Electronics",
+                                stock: 42,
+                                price: 13499,
+                                expiryDate: "2024-06-30",
+                                description: "Portable waterproof speaker",
+                                createdAt: new Date('2023-05-10').toISOString()
+                            },
+                            {
+                                id: 3,
+                                name: "Smart Watch",
+                                sku: "SW-GT2",
+                                category: "Wearables",
+                                stock: 12,
+                                price: 14999,
+                                expiryDate: "2023-11-15",
+                                description: "Fitness tracking smartwatch",
+                                createdAt: new Date('2023-05-20').toISOString()
+                            },
+                            {
+                                id: 4,
+                                name: "USB-C Cable",
+                                sku: "UC-3A1M",
+                                category: "Accessories",
+                                stock: 87,
+                                price: 974,
+                                description: "3ft USB-C charging cable",
+                                createdAt: new Date('2023-05-05').toISOString()
+                            },
+                            {
+                                id: 5,
+                                name: "Laptop Backpack",
+                                sku: "LB-PRO15",
+                                category: "Accessories",
+                                stock: 0,
+                                price: 3749,
+                                expiryDate: "2025-01-01",
+                                description: "15-inch laptop backpack",
+                                createdAt: new Date('2023-05-18').toISOString()
+                            }
+                        ],
+                        suppliers: [
+                            {
+                                id: 1,
+                                name: "Tech Supplies Inc.",
+                                contact: "John Smith",
+                                phone: "(555) 123-4567",
+                                email: "john@techsupplies.com",
+                                category: "Electronics",
+                                products: "Electronics",
+                                status: "Active",
+                                address: "123 Tech Street, Bangalore, India",
+                                createdAt: new Date('2023-01-10').toISOString()
+                            },
+                            {
+                                id: 2,
+                                name: "Electro Gadgets",
+                                contact: "Sarah Johnson",
+                                phone: "(555) 987-6543",
+                                email: "sarah@electrogadgets.com",
+                                category: "Electronics",
+                                products: "Electronics, Accessories",
+                                status: "Active",
+                                address: "456 Gadget Avenue, Mumbai, India",
+                                createdAt: new Date('2023-02-15').toISOString()
+                            },
+                            {
+                                id: 3,
+                                name: "Office Solutions",
+                                contact: "Michael Brown",
+                                phone: "(555) 456-7890",
+                                email: "michael@officesolutions.com",
+                                category: "Office Supplies",
+                                products: "Office Supplies, Furniture",
+                                status: "Active",
+                                address: "789 Office Park, Delhi, India",
+                                createdAt: new Date('2023-03-05').toISOString()
+                            },
+                            {
+                                id: 4,
+                                name: "Global Components",
+                                contact: "Emily Davis",
+                                phone: "(555) 789-0123",
+                                email: "emily@globalcomponents.com",
+                                category: "Electronics",
+                                products: "Electronics, Components",
+                                status: "Inactive",
+                                address: "321 Global Lane, Hyderabad, India",
+                                createdAt: new Date('2023-01-25').toISOString()
+                            },
+                            {
+                                id: 5,
+                                name: "Quality Goods",
+                                contact: "Robert Wilson",
+                                phone: "(555) 234-5678",
+                                email: "robert@qualitygoods.com",
+                                category: "Miscellaneous",
+                                products: "Miscellaneous",
+                                status: "Active",
+                                address: "654 Quality Road, Chennai, India",
+                                createdAt: new Date('2023-04-12').toISOString()
+                            }
+                        ],
+                        orders: [
+                            {
+                                id: 1,
+                                poNumber: "PO-10025",
+                                supplierId: 1,
+                                date: "2023-06-03",
+                                items: [
+                                    { productId: 1, quantity: 2, price: 25000 },
+                                    { productId: 2, quantity: 1, price: 13000 },
+                                    { productId: 4, quantity: 2, price: 900 }
+                                ],
+                                status: "Received",
+                                notes: "Received in good condition",
+                                createdAt: new Date('2023-06-03').toISOString()
+                            },
+                            {
+                                id: 2,
+                                poNumber: "PO-10024",
+                                supplierId: 2,
+                                date: "2023-05-28",
+                                items: [
+                                    { productId: 3, quantity: 3, price: 14500 }
+                                ],
+                                status: "Shipped",
+                                notes: "Expected delivery June 5",
+                                createdAt: new Date('2023-05-28').toISOString()
+                            },
+                            {
+                                id: 3,
+                                poNumber: "PO-10023",
+                                supplierId: 3,
+                                date: "2023-05-22",
+                                items: [
+                                    { productId: 5, quantity: 10, price: 3500 },
+                                    { productId: 4, quantity: 2, price: 950 }
+                                ],
+                                status: "Pending",
+                                notes: "Waiting for approval",
+                                createdAt: new Date('2023-05-22').toISOString()
+                            },
+                            {
+                                id: 4,
+                                poNumber: "PO-10022",
+                                supplierId: 4,
+                                date: "2023-05-15",
+                                items: [
+                                    { productId: 1, quantity: 5, price: 25500 },
+                                    { productId: 2, quantity: 3, price: 13200 }
+                                ],
+                                status: "Received",
+                                notes: "",
+                                createdAt: new Date('2023-05-15').toISOString()
+                            },
+                            {
+                                id: 5,
+                                poNumber: "PO-10021",
+                                supplierId: 1,
+                                date: "2023-05-10",
+                                items: [
+                                    { productId: 3, quantity: 2, price: 14800 },
+                                    { productId: 5, quantity: 4, price: 3600 }
+                                ],
+                                status: "Received",
+                                notes: "All items accounted for",
+                                createdAt: new Date('2023-05-10').toISOString()
+                            }
+                        ],
+                        activities: [
+                            {
+                                id: 1,
+                                date: new Date('2023-06-05T14:32:00').toISOString(),
+                                activity: "Product Added",
+                                user: "John Doe",
+                                details: "Added \"Wireless Earbuds\" to inventory"
+                            },
+                            {
+                                id: 2,
+                                date: new Date('2023-06-05T11:15:00').toISOString(),
+                                activity: "Stock Update",
+                                user: "Jane Smith",
+                                details: "Updated stock for \"USB-C Cable\" (+50 units)"
+                            },
+                            {
+                                id: 3,
+                                date: new Date('2023-06-04T16:45:00').toISOString(),
+                                activity: "Order Processed",
+                                user: "John Doe",
+                                details: "Processed order #ORD-10025"
+                            },
+                            {
+                                id: 4,
+                                date: new Date('2023-06-04T09:20:00').toISOString(),
+                                activity: "Low Stock Alert",
+                                user: "System",
+                                details: "\"Wireless Headphones\" stock below threshold"
+                            },
+                            {
+                                id: 5,
+                                date: new Date('2023-06-03T13:10:00').toISOString(),
+                                activity: "Product Edited",
+                                user: "Jane Smith",
+                                details: "Updated price for \"Bluetooth Speaker\""
+                            }
+                        ],
+                        sales: [
+                            {
+                                id: 1,
+                                date: "2023-06-05",
+                                productId: 1,
+                                quantity: 2,
+                                amount: 52498,
+                                customer: "Retail Customer"
+                            },
+                            {
+                                id: 2,
+                                date: "2023-06-04",
+                                productId: 2,
+                                quantity: 3,
+                                amount: 40497,
+                                customer: "ABC Corporation"
+                            },
+                            {
+                                id: 3,
+                                date: "2023-06-03",
+                                productId: 3,
+                                quantity: 1,
+                                amount: 14999,
+                                customer: "XYZ Enterprises"
+                            },
+                            {
+                                id: 4,
+                                date: "2023-06-02",
+                                productId: 4,
+                                quantity: 5,
+                                amount: 4870,
+                                customer: "Retail Customer"
+                            },
+                            {
+                                id: 5,
+                                date: "2023-06-01",
+                                productId: 1,
+                                quantity: 1,
+                                amount: 26249,
+                                customer: "DEF Ltd."
+                            }
+                        ]
+                    };
+                   
+                    localStorage.setItem('inventDB', JSON.stringify(initialDB));
+                }
+            }
+           
+            getDB() {
+                return JSON.parse(localStorage.getItem('inventDB'));
+            }
+           
+            updateDB(db) {
+                localStorage.setItem('inventDB', JSON.stringify(db));
+            }
+           
+            // User authentication methods
+            getUsers() {
+                const db = this.getDB();
+                if (!db.users) {
+                    db.users = [
+                        {
+                            id: 1,
+                            username: "admin",
+                            password: "admin123",
+                            name: "Admin User",
+                            role: "admin"
+                        },
+                        {
+                            id: 2,
+                            username: "manager",
+                            password: "manager123",
+                            name: "Inventory Manager",
+                            role: "manager"
+                        }
+                    ];
+                    this.updateDB(db);
+                }
+                return db.users;
+            }
+           
+            authenticateUser(username, password) {
+                const users = this.getUsers();
+                return users.find(user => user.username === username && user.password === password);
+            }
+           
+            // Products CRUD
+            getProducts() {
+                const db = this.getDB();
+                return db.products;
+            }
+           
+            getProduct(id) {
+                const db = this.getDB();
+                return db.products.find(p => p.id === id);
+            }
+           
+            addProduct(product) {
+                const db = this.getDB();
+                product.id = db.products.length > 0 ? Math.max(...db.products.map(p => p.id)) + 1 : 1;
+                product.createdAt = new Date().toISOString();
+                db.products.push(product);
+                this.updateDB(db);
+                return product;
+            }
+           
+            updateProduct(id, productData) {
+                const db = this.getDB();
+                const index = db.products.findIndex(p => p.id === id);
+                if (index !== -1) {
+                    db.products[index] = { ...db.products[index], ...productData };
+                    this.updateDB(db);
+                    return db.products[index];
+                }
+                return null;
+            }
+           
+            deleteProduct(id) {
+                const db = this.getDB();
+                const index = db.products.findIndex(p => p.id === id);
+                if (index !== -1) {
+                    db.products.splice(index, 1);
+                    this.updateDB(db);
+                    return true;
+                }
+                return false;
+            }
+           
+            // Suppliers CRUD
+            getSuppliers() {
+                const db = this.getDB();
+                return db.suppliers;
+            }
+           
+            getSupplier(id) {
+                const db = this.getDB();
+                return db.suppliers.find(s => s.id === id);
+            }
+           
+            addSupplier(supplier) {
+                const db = this.getDB();
+                supplier.id = db.suppliers.length > 0 ? Math.max(...db.suppliers.map(s => s.id)) + 1 : 1;
+                supplier.createdAt = new Date().toISOString();
+                db.suppliers.push(supplier);
+                this.updateDB(db);
+                return supplier;
+            }
+           
+            updateSupplier(id, supplierData) {
+                const db = this.getDB();
+                const index = db.suppliers.findIndex(s => s.id === id);
+                if (index !== -1) {
+                    db.suppliers[index] = { ...db.suppliers[index], ...supplierData };
+                    this.updateDB(db);
+                    return db.suppliers[index];
+                }
+                return null;
+            }
+           
+            deleteSupplier(id) {
+                const db = this.getDB();
+                const index = db.suppliers.findIndex(s => s.id === id);
+                if (index !== -1) {
+                    db.suppliers.splice(index, 1);
+                    this.updateDB(db);
+                    return true;
+                }
+                return false;
+            }
+           
+            // Orders CRUD
+            getOrders() {
+                const db = this.getDB();
+                return db.orders.map(order => {
+                    const supplier = this.getSupplier(order.supplierId);
+                    return {
+                        ...order,
+                        supplierName: supplier ? supplier.name : 'Unknown Supplier',
+                        total: order.items.reduce((sum, item) => sum + (item.quantity * item.price), 0)
+                    };
+                });
+            }
+           
+            getOrder(id) {
+                const db = this.getDB();
+                const order = db.orders.find(o => o.id === id);
+                if (order) {
+                    const supplier = this.getSupplier(order.supplierId);
+                    return {
+                        ...order,
+                        supplierName: supplier ? supplier.name : 'Unknown Supplier',
+                        total: order.items.reduce((sum, item) => sum + (item.quantity * item.price), 0)
+                    };
+                }
+                return null;
+            }
+           
+            addOrder(order) {
+                const db = this.getDB();
+                order.id = db.orders.length > 0 ? Math.max(...db.orders.map(o => o.id)) + 1 : 1;
+                order.poNumber = `PO-${10000 + order.id}`;
+                order.createdAt = new Date().toISOString();
+                db.orders.push(order);
+                this.updateDB(db);
+                return order;
+            }
+           
+            updateOrder(id, orderData) {
+                const db = this.getDB();
+                const index = db.orders.findIndex(o => o.id === id);
+                if (index !== -1) {
+                    db.orders[index] = { ...db.orders[index], ...orderData };
+                    this.updateDB(db);
+                    return db.orders[index];
+                }
+                return null;
+            }
+           
+            deleteOrder(id) {
+                const db = this.getDB();
+                const index = db.orders.findIndex(o => o.id === id);
+                if (index !== -1) {
+                    db.orders.splice(index, 1);
+                    this.updateDB(db);
+                    return true;
+                }
+                return false;
+            }
+           
+            // Activities
+            getActivities() {
+                const db = this.getDB();
+                return db.activities;
+            }
+           
+            addActivity(activity) {
+                const db = this.getDB();
+                activity.id = db.activities.length > 0 ? Math.max(...db.activities.map(a => a.id)) + 1 : 1;
+                activity.date = new Date().toISOString();
+                db.activities.unshift(activity);
+                this.updateDB(db);
+                return activity;
+            }
+           
+            // Settings
+            getSettings() {
+                const db = this.getDB();
+                return db.settings;
+            }
+           
+            updateSettings(settings) {
+                const db = this.getDB();
+                db.settings = { ...db.settings, ...settings };
+                this.updateDB(db);
+                return db.settings;
+            }
+           
+            // Sales
+            getSales() {
+                const db = this.getDB();
+                return db.sales;
+            }
+           
+            getMonthlySales() {
+                const db = this.getDB();
+                const currentMonth = new Date().getMonth() + 1;
+                const currentYear = new Date().getFullYear();
+               
+                return db.sales.filter(sale => {
+                    const saleDate = new Date(sale.date);
+                    return saleDate.getMonth() + 1 === currentMonth && saleDate.getFullYear() === currentYear;
+                }).reduce((sum, sale) => sum + sale.amount, 0);
+            }
+           
+            getTopProduct() {
+                const db = this.getDB();
+                const productSales = {};
+               
+                db.sales.forEach(sale => {
+                    if (!productSales[sale.productId]) {
+                        productSales[sale.productId] = 0;
+                    }
+                    productSales[sale.productId] += sale.quantity;
+                });
+               
+                let topProductId = null;
+                let maxSales = 0;
+               
+                for (const productId in productSales) {
+                    if (productSales[productId] > maxSales) {
+                        maxSales = productSales[productId];
+                        topProductId = parseInt(productId);
+                    }
+                }
+               
+                if (topProductId) {
+                    const product = this.getProduct(topProductId);
+                    return {
+                        product: product ? product.name : 'Unknown Product',
+                        sales: maxSales
+                    };
+                }
+               
+                return {
+                    product: 'No sales data',
+                    sales: 0
+                };
+            }
+           
+            getInventoryValue() {
+                const products = this.getProducts();
+                return products.reduce((sum, product) => sum + (product.stock * product.price), 0);
+            }
+           
+            getAverageOrderValue() {
+                const sales = this.getSales();
+                if (sales.length === 0) return 0;
+                return sales.reduce((sum, sale) => sum + sale.amount, 0) / sales.length;
+            }
+           
+            getSalesGrowth() {
+                const db = this.getDB();
+                const currentMonth = new Date().getMonth() + 1;
+                const currentYear = new Date().getFullYear();
+                const prevMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+                const prevYear = currentMonth === 1 ? currentYear - 1 : currentYear;
+               
+                const currentMonthSales = db.sales.filter(sale => {
+                    const saleDate = new Date(sale.date);
+                    return saleDate.getMonth() + 1 === currentMonth && saleDate.getFullYear() === currentYear;
+                }).reduce((sum, sale) => sum + sale.amount, 0);
+               
+                const prevMonthSales = db.sales.filter(sale => {
+                    const saleDate = new Date(sale.date);
+                    return saleDate.getMonth() + 1 === prevMonth && saleDate.getFullYear() === prevYear;
+                }).reduce((sum, sale) => sum + sale.amount, 0);
+               
+                if (prevMonthSales === 0) return 0;
+                return ((currentMonthSales - prevMonthSales) / prevMonthSales) * 100;
+            }
+           
+            getOrderGrowth() {
+                const db = this.getDB();
+                const currentQuarter = Math.floor((new Date().getMonth() + 3) / 3);
+                const currentYear = new Date().getFullYear();
+                const prevQuarter = currentQuarter === 1 ? 4 : currentQuarter - 1;
+                const prevYear = currentQuarter === 1 ? currentYear - 1 : currentYear;
+               
+                const currentQuarterAvg = this.getQuarterlyAverage(currentQuarter, currentYear);
+                const prevQuarterAvg = this.getQuarterlyAverage(prevQuarter, prevYear);
+               
+                if (prevQuarterAvg === 0) return 0;
+                return ((currentQuarterAvg - prevQuarterAvg) / prevQuarterAvg) * 100;
+            }
+           
+            getQuarterlyAverage(quarter, year) {
+                const db = this.getDB();
+                const quarterSales = db.sales.filter(sale => {
+                    const saleDate = new Date(sale.date);
+                    const saleQuarter = Math.floor((saleDate.getMonth() + 3) / 3);
+                    return saleQuarter === quarter && saleDate.getFullYear() === year;
+                });
+               
+                if (quarterSales.length === 0) return 0;
+                return quarterSales.reduce((sum, sale) => sum + sale.amount, 0) / quarterSales.length;
+            }
+           
+            getLowStockItems() {
+                const db = this.getDB();
+                const criticalThreshold = db.settings.criticalStockThreshold || 5;
+                const lowThreshold = db.settings.lowStockThreshold || 10;
+               
+                return db.products.filter(product => product.stock <= lowThreshold).length;
+            }
+           
+            getPendingOrders() {
+                const db = this.getDB();
+                return db.orders.filter(order => order.status === 'Pending').length;
+            }
+           
+            getNewOrdersToday() {
+                const db = this.getDB();
+                const today = new Date().toISOString().split('T')[0];
+                return db.orders.filter(order => order.date === today).length;
+            }
+           
+            getProductsNearExpiry(daysThreshold = null) {
+                const db = this.getDB();
+                const threshold = daysThreshold || db.settings.expiryDaysThreshold || 30;
+                const today = new Date();
+                const thresholdDate = new Date();
+                thresholdDate.setDate(today.getDate() + threshold);
+               
+                return db.products.filter(product => {
+                    if (!product.expiryDate) return false;
+                   
+                    const expiryDate = new Date(product.expiryDate);
+                    return expiryDate <= thresholdDate && expiryDate >= today;
+                });
+            }
+           
+            calculateDiscount(expiryDate) {
+                const today = new Date();
+                const expiry = new Date(expiryDate);
+                const daysRemaining = Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
+               
+                // More discount as it gets closer to expiry
+                if (daysRemaining <= 7) return 0.5; // 50% off
+                if (daysRemaining <= 14) return 0.3; // 30% off
+                if (daysRemaining <= 30) return 0.2; // 20% off
+                return 0; // No discount
+            }
+           
+            getSalesDataForChart() {
+                const db = this.getDB();
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                const currentYear = new Date().getFullYear();
+               
+                const monthlySales = Array(12).fill(0);
+               
+                db.sales.forEach(sale => {
+                    const saleDate = new Date(sale.date);
+                    if (saleDate.getFullYear() === currentYear) {
+                        monthlySales[saleDate.getMonth()] += sale.amount;
+                    }
+                });
+               
+                return {
+                    labels: months,
+                    data: monthlySales
+                };
+            }
+           
+            getInventoryDataForChart() {
+                const products = this.getProducts();
+                const categories = {};
+               
+                products.forEach(product => {
+                    if (!categories[product.category]) {
+                        categories[product.category] = 0;
+                    }
+                    categories[product.category] += product.stock * product.price;
+                });
+               
+                return {
+                    labels: Object.keys(categories),
+                    data: Object.values(categories)
+                };
+            }
+        }
+
+        // Initialize the database
+        const db = new InventDB();
+
+        // DOM Elements
+        const modals = {
+            product: document.getElementById('productModal'),
+            order: document.getElementById('orderModal'),
+            supplier: document.getElementById('supplierModal'),
+            confirm: document.getElementById('confirmModal')
+        };
+
+        const closeModalButtons = document.querySelectorAll('.close-modal, .cancel-btn');
+        const addProductBtn = document.getElementById('addProductBtn');
+        const addOrderBtn = document.getElementById('addOrderBtn');
+        const addSupplierBtn = document.getElementById('addSupplierBtn');
+        const confirmActionBtn = document.getElementById('confirmAction');
+        const cancelConfirmBtn = document.getElementById('cancelConfirm');
+
+        // Navigation between sections
+        const navLinks = {
+            dashboardLink: 'dashboardContent',
+            inventoryLink: 'inventoryContent',
+            purchaseLink: 'purchaseContent',
+            suppliersLink: 'suppliersContent',
+            analyticsLink: 'analyticsContent',
+            settingsLink: 'settingsContent'
+        };
+
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+           
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorElement = document.getElementById('loginError');
+           
+            // Authenticate user
+            const user = db.authenticateUser(username, password);
+           
+            if (user) {
+                // Successful login
+                errorElement.style.display = 'none';
+               
+                // Hide login page and show main app
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+               
+                // Set the current user (you can use this for authorization later)
+                window.currentUser = user;
+               
+                // Update the user profile in the UI
+                document.querySelectorAll('.user-profile span').forEach(el => {
+                    el.textContent = user.name;
+                });
+               
+                // Load dashboard data
+                loadDashboardData();
+               
+                // Log login activity
+                db.addActivity({
+                    activity: "User Login",
+                    user: user.name,
+                    details: `${user.name} logged into the system`
+                });
+            } else {
+                // Failed login
+                errorElement.textContent = 'Invalid username or password';
+                errorElement.style.display = 'block';
+            }
+        });
+
+        // Add click event listeners to all navigation links
+        Object.keys(navLinks).forEach(linkId => {
+            const link = document.getElementById(linkId);
+            const contentId = navLinks[linkId];
+           
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+               
+                // Hide all content sections
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+               
+                // Remove active class from all nav items
+                document.querySelectorAll('.sidebar-menu li').forEach(item => {
+                    item.classList.remove('active');
+                });
+               
+                // Show the selected content section
+                document.getElementById(contentId).classList.add('active');
+               
+                // Add active class to the clicked nav item
+                this.classList.add('active');
+               
+                // Load data for the section if needed
+                if (contentId === 'dashboardContent') {
+                    loadDashboardData();
+                } else if (contentId === 'inventoryContent') {
+                    loadInventoryData();
+                } else if (contentId === 'purchaseContent') {
+                    loadOrdersData();
+                } else if (contentId === 'suppliersContent') {
+                    loadSuppliersData();
+                } else if (contentId === 'analyticsContent') {
+                    loadAnalyticsData();
+                } else if (contentId === 'settingsContent') {
+                    loadSettingsData();
+                }
+            });
+        });
+
+        // Modal functionality
+        function openModal(modal) {
+            modal.style.display = 'block';
+        }
+
+        function closeModal(modal) {
+            modal.style.display = 'none';
+        }
+
+        closeModalButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const modal = this.closest('.modal');
+                closeModal(modal);
+            });
+        });
+
+        window.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                closeModal(e.target);
+            }
+        });
+
+        // Load data functions
+        function loadDashboardData() {
+            const settings = db.getSettings();
+            const totalProducts = db.getProducts().length;
+            const lowStockItems = db.getLowStockItems();
+            const pendingOrders = db.getPendingOrders();
+            const newOrdersToday = db.getNewOrdersToday();
+            const monthlySales = db.getMonthlySales();
+            const salesGrowth = db.getSalesGrowth();
+            const topProduct = db.getTopProduct();
+            const inventoryValue = db.getInventoryValue();
+            const avgOrderValue = db.getAverageOrderValue();
+            const orderGrowth = db.getOrderGrowth();
+            const activities = db.getActivities();
+            const expiringProducts = db.getProductsNearExpiry().length;
+
+            // Update dashboard cards
+            document.getElementById('totalProducts').textContent = totalProducts.toLocaleString();
+            document.getElementById('productsChange').textContent = '+12% from last month'; // Placeholder
+           
+            document.getElementById('lowStockItems').textContent = lowStockItems;
+           
+            document.getElementById('pendingOrders').textContent = pendingOrders;
+            document.getElementById('newOrdersToday').textContent = `${newOrdersToday} new today`;
+           
+            document.getElementById('expiringProducts').textContent = expiringProducts;
+            document.getElementById('expiringDetails').textContent = expiringProducts > 0 ?
+                'Check inventory for discounts' : 'No products expiring soon';
+           
+            document.getElementById('monthlySales').textContent = `₹${monthlySales.toLocaleString()}`;
+            document.getElementById('salesGrowth').textContent = `+${Math.round(salesGrowth)}% from last month`;
+           
+            document.getElementById('topProduct').textContent = topProduct.product;
+            document.getElementById('topProductSales').textContent = `${topProduct.sales} units sold`;
+           
+            document.getElementById('inventoryValue').textContent = `₹${inventoryValue.toLocaleString()}`;
+            document.getElementById('inventoryItems').textContent = `${totalProducts} items in stock`;
+           
+            document.getElementById('avgOrderValue').textContent = `₹${avgOrderValue.toLocaleString()}`;
+            document.getElementById('orderGrowth').textContent = `+${Math.round(orderGrowth)}% from last quarter`;
+
+            // Update activity table
+            const activityBody = document.getElementById('activityBody');
+            activityBody.innerHTML = '';
+           
+            activities.forEach(activity => {
+                const date = new Date(activity.date);
+                const row = document.createElement('tr');
+               
+                row.innerHTML = `
+                    <td>${date.toLocaleString()}</td>
+                    <td>${activity.activity}</td>
+                    <td>${activity.user}</td>
+                    <td>${activity.details}</td>
+                `;
+               
+                activityBody.appendChild(row);
+            });
+
+            // Initialize charts (will be loaded when analytics section is opened)
+        }
+
+        function loadInventoryData() {
+            const products = db.getProducts();
+            const settings = db.getSettings();
+            const criticalThreshold = settings.criticalStockThreshold || 5;
+            const lowThreshold = settings.lowStockThreshold || 10;
+           
+            const inventoryBody = document.getElementById('inventoryBody');
+            inventoryBody.innerHTML = '';
+           
+            products.forEach(product => {
+                const row = document.createElement('tr');
+               
+                let stockClass = '';
+                let statusBadge = '';
+                let discountBadge = '';
+                let displayPrice = product.price;
+               
+                // Check for near expiry and apply discount
+                if (product.expiryDate) {
+                    const today = new Date();
+                    const expiryDate = new Date(product.expiryDate);
+                   
+                    if (expiryDate >= today) { // Only if not expired
+                        const daysRemaining = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
+                       
+                        if (daysRemaining <= 30) {
+                            const discount = db.calculateDiscount(product.expiryDate);
+                            if (discount > 0) {
+                                displayPrice = product.price * (1 - discount);
+                                discountBadge = `<span class="badge badge-warning">${Math.round(discount * 100)}% OFF</span>`;
+                            }
+                           
+                            if (daysRemaining <= 7) {
+                                statusBadge = '<span class="badge badge-danger">Expiring Soon!</span>';
+                            }
+                        }
+                    } else {
+                        statusBadge = '<span class="badge badge-danger">Expired</span>';
+                    }
+                }
+               
+                if (product.stock <= criticalThreshold && !statusBadge) {
+                    stockClass = 'stock-critical';
+                    statusBadge = '<span class="badge badge-danger">Critical</span>';
+                } else if (product.stock <= lowThreshold && !statusBadge) {
+                    stockClass = 'stock-low';
+                    statusBadge = '<span class="badge badge-warning">Low</span>';
+                } else if (product.stock === 0 && !statusBadge) {
+                    statusBadge = '<span class="badge badge-danger">Out of Stock</span>';
+                } else if (!statusBadge) {
+                    statusBadge = '<span class="badge badge-success">In Stock</span>';
+                }
+               
+                row.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>${product.sku}</td>
+                    <td>${product.category}</td>
+                    <td class="${stockClass}">${product.stock}</td>
+                    <td>
+                        ${discountBadge ? `<span class="original-price">₹${product.price.toLocaleString()}</span><br>` : ''}
+                        <span class="${discountBadge ? 'discount-price' : ''}">₹${displayPrice.toLocaleString()}</span>
+                        ${discountBadge}
+                    </td>
+                    <td>${statusBadge}</td>
+                    <td>
+                        <button class="action-btn view-product" data-id="${product.id}"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn edit-product" data-id="${product.id}"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete-product" data-id="${product.id}"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+               
+                inventoryBody.appendChild(row);
+            });
+           
+            // Add event listeners to action buttons
+            document.querySelectorAll('.view-product').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    viewProduct(parseInt(this.getAttribute('data-id')));
+                });
+            });
+           
+            document.querySelectorAll('.edit-product').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    editProduct(parseInt(this.getAttribute('data-id')));
+                });
+            });
+           
+            document.querySelectorAll('.delete-product').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    confirmDelete('product', parseInt(this.getAttribute('data-id')));
+                });
+            });
+        }
+
+        function loadOrdersData() {
+            const orders = db.getOrders();
+            const ordersBody = document.getElementById('ordersBody');
+            ordersBody.innerHTML = '';
+           
+            orders.forEach(order => {
+                const row = document.createElement('tr');
+               
+                let statusBadge = '';
+                if (order.status === 'Received') {
+                    statusBadge = '<span class="badge badge-success">Received</span>';
+                } else if (order.status === 'Shipped') {
+                    statusBadge = '<span class="badge badge-warning">Shipped</span>';
+                } else if (order.status === 'Pending') {
+                    statusBadge = '<span class="badge badge-danger">Pending</span>';
+                } else if (order.status === 'Approved') {
+                    statusBadge = '<span class="badge badge-primary">Approved</span>';
+                } else if (order.status === 'Cancelled') {
+                    statusBadge = '<span class="badge badge-secondary">Cancelled</span>';
+                }
+               
+                row.innerHTML = `
+                    <td>${order.poNumber}</td>
+                    <td>${order.supplierName}</td>
+                    <td>${order.date}</td>
+                    <td>${order.items.length}</td>
+                    <td>₹${order.total.toLocaleString()}</td>
+                    <td>${statusBadge}</td>
+                    <td>
+                        <button class="action-btn view-order" data-id="${order.id}"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn edit-order" data-id="${order.id}"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete-order" data-id="${order.id}"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+               
+                ordersBody.appendChild(row);
+            });
+           
+            // Add event listeners to action buttons
+            document.querySelectorAll('.view-order').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    viewOrder(parseInt(this.getAttribute('data-id')));
+                });
+            });
+           
+            document.querySelectorAll('.edit-order').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    editOrder(parseInt(this.getAttribute('data-id')));
+                });
+            });
+           
+            document.querySelectorAll('.delete-order').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    confirmDelete('order', parseInt(this.getAttribute('data-id')));
+                });
+            });
+        }
+
+        function loadSuppliersData() {
+            const suppliers = db.getSuppliers();
+            const suppliersBody = document.getElementById('suppliersBody');
+            suppliersBody.innerHTML = '';
+           
+            suppliers.forEach(supplier => {
+                const row = document.createElement('tr');
+               
+                const statusBadge = supplier.status === 'Active'
+                    ? '<span class="badge badge-success">Active</span>'
+                    : '<span class="badge badge-warning">Inactive</span>';
+               
+                row.innerHTML = `
+                    <td>${supplier.name}</td>
+                    <td>${supplier.contact}</td>
+                    <td>${supplier.phone}</td>
+                    <td>${supplier.email}</td>
+                    <td>${supplier.products}</td>
+                    <td>${statusBadge}</td>
+                    <td>
+                        <button class="action-btn view-supplier" data-id="${supplier.id}"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn edit-supplier" data-id="${supplier.id}"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete-supplier" data-id="${supplier.id}"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+               
+                suppliersBody.appendChild(row);
+            });
+           
+            // Add event listeners to action buttons
+            document.querySelectorAll('.view-supplier').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    viewSupplier(parseInt(this.getAttribute('data-id')));
+                });
+            });
+           
+            document.querySelectorAll('.edit-supplier').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    editSupplier(parseInt(this.getAttribute('data-id')));
+                });
+            });
+           
+            document.querySelectorAll('.delete-supplier').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    confirmDelete('supplier', parseInt(this.getAttribute('data-id')));
+                });
+            });
+        }
+
+        function loadAnalyticsData() {
+            // Initialize charts
+            initSalesChart();
+            initInventoryChart();
+        }
+
+        function loadSettingsData() {
+            const settings = db.getSettings();
+           
+            document.getElementById('companyName').value = settings.companyName;
+            document.getElementById('timezone').value = settings.timezone;
+            document.getElementById('dateFormat').value = settings.dateFormat;
+            document.getElementById('currency').value = settings.currency;
+            document.getElementById('lowStockThreshold').value = settings.lowStockThreshold;
+            document.getElementById('criticalStockThreshold').value = settings.criticalStockThreshold;
+            document.getElementById('expiryDaysThreshold').value = settings.expiryDaysThreshold || 30;
+            document.getElementById('notificationEmail').value = settings.notificationEmail;
+            document.getElementById('systemMessage').value = settings.systemMessage;
+        }
+
+        // Product CRUD operations
+        function viewProduct(id) {
+            const product = db.getProduct(id);
+            if (product) {
+                let expiryInfo = '';
+                if (product.expiryDate) {
+                    const today = new Date();
+                    const expiryDate = new Date(product.expiryDate);
+                    const daysRemaining = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
+                   
+                    if (expiryDate < today) {
+                        expiryInfo = `\nExpiry: EXPIRED (${product.expiryDate})`;
+                    } else {
+                        expiryInfo = `\nExpiry: ${product.expiryDate} (${daysRemaining} days remaining)`;
+                       
+                        const discount = db.calculateDiscount(product.expiryDate);
+                        if (discount > 0) {
+                            expiryInfo += `\nCurrent Discount: ${Math.round(discount * 100)}% OFF`;
+                        }
+                    }
+                }
+               
+                alert(`Viewing product: ${product.name}\nSKU: ${product.sku}\nCategory: ${product.category}\nStock: ${product.stock}\nPrice: ₹${product.price}${expiryInfo}\nDescription: ${product.description}`);
+            }
+        }
+
+        function editProduct(id) {
+            const product = db.getProduct(id);
+            if (product) {
+                document.getElementById('productModalTitle').textContent = 'Edit Product';
+                document.getElementById('productId').value = product.id;
+                document.getElementById('productName').value = product.name;
+                document.getElementById('productSku').value = product.sku;
+                document.getElementById('productCategory').value = product.category;
+                document.getElementById('productStock').value = product.stock;
+                document.getElementById('productPrice').value = product.price;
+                document.getElementById('productExpiry').value = product.expiryDate || '';
+                document.getElementById('productDescription').value = product.description || '';
+               
+                openModal(modals.product);
+            }
+        }
+
+        function addProduct() {
+            document.getElementById('productModalTitle').textContent = 'Add New Product';
+            document.getElementById('productForm').reset();
+            document.getElementById('productId').value = '';
+            openModal(modals.product);
+        }
+
+        function saveProduct(e) {
+            e.preventDefault();
+           
+            const id = document.getElementById('productId').value;
+            const productData = {
+                name: document.getElementById('productName').value,
+                sku: document.getElementById('productSku').value,
+                category: document.getElementById('productCategory').value,
+                stock: parseInt(document.getElementById('productStock').value),
+                price: parseFloat(document.getElementById('productPrice').value),
+                expiryDate: document.getElementById('productExpiry').value || null,
+                description: document.getElementById('productDescription').value
+            };
+           
+            if (id) {
+                // Update existing product
+                const updatedProduct = db.updateProduct(parseInt(id), productData);
+                if (updatedProduct) {
+                    db.addActivity({
+                        activity: "Product Updated",
+                        user: window.currentUser.name,
+                        details: `Updated product "${updatedProduct.name}"`
+                    });
+                    alert('Product updated successfully!');
+                }
+            } else {
+                // Add new product
+                const newProduct = db.addProduct(productData);
+                db.addActivity({
+                    activity: "Product Added",
+                    user: window.currentUser.name,
+                    details: `Added new product "${newProduct.name}"`
+                });
+                alert('Product added successfully!');
+            }
+           
+            closeModal(modals.product);
+            loadInventoryData();
+        }
+
+        // Order CRUD operations
+        function viewOrder(id) {
+            const order = db.getOrder(id);
+            if (order) {
+                let itemsText = order.items.map(item => {
+                    const product = db.getProduct(item.productId);
+                    return `${product ? product.name : 'Unknown Product'} - ${item.quantity} x ₹${item.price}`;
+                }).join('\n');
+               
+                alert(`Viewing order: ${order.poNumber}\nSupplier: ${order.supplierName}\nDate: ${order.date}\nStatus: ${order.status}\nTotal: ₹${order.total}\nItems:\n${itemsText}\nNotes: ${order.notes}`);
+            }
+        }
+
+        function editOrder(id) {
+            const order = db.getOrder(id);
+            if (order) {
+                document.getElementById('orderModalTitle').textContent = 'Edit Purchase Order';
+                document.getElementById('orderId').value = order.id;
+                document.getElementById('orderSupplier').value = order.supplierId;
+                document.getElementById('orderDate').value = order.date;
+                document.getElementById('orderStatus').value = order.status;
+                document.getElementById('orderNotes').value = order.notes || '';
+               
+                // Clear existing items
+                const itemsContainer = document.getElementById('orderItemsContainer');
+                itemsContainer.innerHTML = '';
+               
+                // Add order items
+                order.items.forEach(item => {
+                    addOrderItem(item.productId, item.quantity, item.price);
+                });
+               
+                // Load suppliers
+                loadSuppliersForOrder();
+               
+                openModal(modals.order);
+            }
+        }
+
+        function addOrder() {
+            document.getElementById('orderModalTitle').textContent = 'Create Purchase Order';
+            document.getElementById('orderForm').reset();
+            document.getElementById('orderId').value = '';
+            document.getElementById('orderDate').value = new Date().toISOString().split('T')[0];
+           
+            // Clear existing items
+            const itemsContainer = document.getElementById('orderItemsContainer');
+            itemsContainer.innerHTML = '';
+           
+            // Add one empty item
+            addOrderItem();
+           
+            // Load suppliers
+            loadSuppliersForOrder();
+           
+            openModal(modals.order);
+        }
+
+        function loadSuppliersForOrder() {
+            const supplierSelect = document.getElementById('orderSupplier');
+            supplierSelect.innerHTML = '<option value="">Select Supplier</option>';
+           
+            const suppliers = db.getSuppliers();
+            suppliers.forEach(supplier => {
+                const option = document.createElement('option');
+                option.value = supplier.id;
+                option.textContent = supplier.name;
+                supplierSelect.appendChild(option);
+            });
+        }
+
+        function addOrderItem(productId = '', quantity = '', price = '') {
+            const itemsContainer = document.getElementById('orderItemsContainer');
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'order-item';
+           
+            itemDiv.innerHTML = `
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <select class="orderItemProduct" style="flex: 2;" required>
+                        <option value="">Select Product</option>
+                        <!-- Products will be loaded here -->
+                    </select>
+                    <input type="number" class="orderItemQuantity" placeholder="Qty" value="${quantity}" style="flex: 1;" required>
+                    <input type="number" step="0.01" class="orderItemPrice" placeholder="Price" value="${price}" style="flex: 1;" required>
+                    <button type="button" class="btn btn-danger removeItemBtn" style="flex: 0.5;"><i class="fas fa-times"></i></button>
+                </div>
+            `;
+           
+            itemsContainer.appendChild(itemDiv);
+           
+            // Load products for this item
+            const productSelect = itemDiv.querySelector('.orderItemProduct');
+            const products = db.getProducts();
+           
+            products.forEach(product => {
+                const option = document.createElement('option');
+                option.value = product.id;
+                option.textContent = product.name;
+                if (product.id === productId) {
+                    option.selected = true;
+                }
+                productSelect.appendChild(option);
+            });
+           
+            // Add event listener to remove button
+            itemDiv.querySelector('.removeItemBtn').addEventListener('click', function() {
+                if (itemsContainer.children.length > 1) {
+                    itemsContainer.removeChild(itemDiv);
+                } else {
+                    alert('An order must have at least one item.');
+                }
+            });
+        }
+
+        function saveOrder(e) {
+            e.preventDefault();
+           
+            const id = document.getElementById('orderId').value;
+            const orderData = {
+                supplierId: parseInt(document.getElementById('orderSupplier').value),
+                date: document.getElementById('orderDate').value,
+                status: document.getElementById('orderStatus').value,
+                notes: document.getElementById('orderNotes').value,
+                items: []
+            };
+           
+            // Get all order items
+            const orderItems = document.querySelectorAll('.order-item');
+            orderItems.forEach(item => {
+                const productId = parseInt(item.querySelector('.orderItemProduct').value);
+                const quantity = parseInt(item.querySelector('.orderItemQuantity').value);
+                const price = parseFloat(item.querySelector('.orderItemPrice').value);
+               
+                if (productId && quantity && price) {
+                    orderData.items.push({
+                        productId,
+                        quantity,
+                        price
+                    });
+                }
+            });
+           
+            if (orderData.items.length === 0) {
+                alert('Please add at least one valid item to the order.');
+                return;
+            }
+           
+            if (id) {
+                // Update existing order
+                const updatedOrder = db.updateOrder(parseInt(id), orderData);
+                if (updatedOrder) {
+                    db.addActivity({
+                        activity: "Order Updated",
+                        user: window.currentUser.name,
+                        details: `Updated order ${updatedOrder.poNumber}`
+                    });
+                    alert('Order updated successfully!');
+                }
+            } else {
+                // Add new order
+                const newOrder = db.addOrder(orderData);
+                db.addActivity({
+                    activity: "Order Created",
+                    user: window.currentUser.name,
+                    details: `Created new order ${newOrder.poNumber}`
+                });
+                alert('Order created successfully!');
+            }
+           
+            closeModal(modals.order);
+            loadOrdersData();
+        }
+
+        // Supplier CRUD operations
+        function viewSupplier(id) {
+            const supplier = db.getSupplier(id);
+            if (supplier) {
+                alert(`Viewing supplier: ${supplier.name}\nContact: ${supplier.contact}\nPhone: ${supplier.phone}\nEmail: ${supplier.email}\nCategory: ${supplier.category}\nProducts: ${supplier.products}\nStatus: ${supplier.status}\nAddress: ${supplier.address}`);
+            }
+        }
+
+        function editSupplier(id) {
+            const supplier = db.getSupplier(id);
+            if (supplier) {
+                document.getElementById('supplierModalTitle').textContent = 'Edit Supplier';
+                document.getElementById('supplierId').value = supplier.id;
+                document.getElementById('supplierName').value = supplier.name;
+                document.getElementById('supplierContact').value = supplier.contact;
+                document.getElementById('supplierPhone').value = supplier.phone;
+                document.getElementById('supplierEmail').value = supplier.email;
+                document.getElementById('supplierCategory').value = supplier.category;
+                document.getElementById('supplierProducts').value = supplier.products;
+                document.getElementById('supplierStatus').value = supplier.status;
+                document.getElementById('supplierAddress').value = supplier.address || '';
+               
+                openModal(modals.supplier);
+            }
+        }
+
+        function addSupplier() {
+            document.getElementById('supplierModalTitle').textContent = 'Add New Supplier';
+            document.getElementById('supplierForm').reset();
+            document.getElementById('supplierId').value = '';
+            openModal(modals.supplier);
+        }
+
+        function saveSupplier(e) {
+            e.preventDefault();
+           
+            const id = document.getElementById('supplierId').value;
+            const supplierData = {
+                name: document.getElementById('supplierName').value,
+                contact: document.getElementById('supplierContact').value,
+                phone: document.getElementById('supplierPhone').value,
+                email: document.getElementById('supplierEmail').value,
+                category: document.getElementById('supplierCategory').value,
+                products: document.getElementById('supplierProducts').value,
+                status: document.getElementById('supplierStatus').value,
+                address: document.getElementById('supplierAddress').value
+            };
+           
+            if (id) {
+                // Update existing supplier
+                const updatedSupplier = db.updateSupplier(parseInt(id), supplierData);
+                if (updatedSupplier) {
+                    db.addActivity({
+                        activity: "Supplier Updated",
+                        user: window.currentUser.name,
+                        details: `Updated supplier "${updatedSupplier.name}"`
+                    });
+                    alert('Supplier updated successfully!');
+                }
+            } else {
+                // Add new supplier
+                const newSupplier = db.addSupplier(supplierData);
+                db.addActivity({
+                    activity: "Supplier Added",
+                    user: window.currentUser.name,
+                    details: `Added new supplier "${newSupplier.name}"`
+                });
+                alert('Supplier added successfully!');
+            }
+           
+            closeModal(modals.supplier);
+            loadSuppliersData();
+        }
+
+        // Settings operations
+        function saveSettings(e) {
+            e.preventDefault();
+           
+            const settingsData = {
+                companyName: document.getElementById('companyName').value,
+                timezone: document.getElementById('timezone').value,
+                dateFormat: document.getElementById('dateFormat').value,
+                currency: document.getElementById('currency').value,
+                lowStockThreshold: parseInt(document.getElementById('lowStockThreshold').value),
+                criticalStockThreshold: parseInt(document.getElementById('criticalStockThreshold').value),
+                expiryDaysThreshold: parseInt(document.getElementById('expiryDaysThreshold').value),
+                notificationEmail: document.getElementById('notificationEmail').value,
+                systemMessage: document.getElementById('systemMessage').value
+            };
+           
+            db.updateSettings(settingsData);
+            db.addActivity({
+                activity: "Settings Updated",
+                user: window.currentUser.name,
+                details: "System settings were modified"
+            });
+           
+            alert('Settings saved successfully!');
+            loadSettingsData();
+        }
+
+        // Delete confirmation
+        let currentDeleteType = '';
+        let currentDeleteId = 0;
+
+        function confirmDelete(type, id) {
+            currentDeleteType = type;
+            currentDeleteId = id;
+           
+            let message = '';
+            if (type === 'product') {
+                const product = db.getProduct(id);
+                message = `Are you sure you want to delete the product "${product.name}"? This action cannot be undone.`;
+            } else if (type === 'order') {
+                const order = db.getOrder(id);
+                message = `Are you sure you want to delete the order "${order.poNumber}"? This action cannot be undone.`;
+            } else if (type === 'supplier') {
+                const supplier = db.getSupplier(id);
+                message = `Are you sure you want to delete the supplier "${supplier.name}"? This action cannot be undone.`;
+            }
+           
+            document.getElementById('confirmModalMessage').textContent = message;
+            openModal(modals.confirm);
+        }
+
+        function performDelete() {
+            let success = false;
+            let details = '';
+           
+            if (currentDeleteType === 'product') {
+                const product = db.getProduct(currentDeleteId);
+                if (product) {
+                    success = db.deleteProduct(currentDeleteId);
+                    details = `Deleted product "${product.name}"`;
+                }
+            } else if (currentDeleteType === 'order') {
+                const order = db.getOrder(currentDeleteId);
+                if (order) {
+                    success = db.deleteOrder(currentDeleteId);
+                    details = `Deleted order "${order.poNumber}"`;
+                }
+            } else if (currentDeleteType === 'supplier') {
+                const supplier = db.getSupplier(currentDeleteId);
+                if (supplier) {
+                    success = db.deleteSupplier(currentDeleteId);
+                    details = `Deleted supplier "${supplier.name}"`;
+                }
+            }
+           
+            if (success) {
+                db.addActivity({
+                    activity: `${currentDeleteType.charAt(0).toUpperCase() + currentDeleteType.slice(1)} Deleted`,
+                    user: window.currentUser.name,
+                    details
+                });
+               
+                alert('Item deleted successfully!');
+               
+                // Refresh the appropriate section
+                if (currentDeleteType === 'product') {
+                    loadInventoryData();
+                } else if (currentDeleteType === 'order') {
+                    loadOrdersData();
+                } else if (currentDeleteType === 'supplier') {
+                    loadSuppliersData();
+                }
+            } else {
+                alert('Failed to delete item.');
+            }
+           
+            closeModal(modals.confirm);
+        }
+
+        // Chart initialization
+        function initSalesChart() {
+            const salesData = db.getSalesDataForChart();
+            const ctx = document.getElementById('salesChart').getContext('2d');
+           
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: salesData.labels,
+                    datasets: [{
+                        label: 'Monthly Sales (₹)',
+                        data: salesData.data,
+                        backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                        borderColor: 'rgba(52, 152, 219, 1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `₹${context.raw.toLocaleString()}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return `₹${value.toLocaleString()}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initInventoryChart() {
+            const inventoryData = db.getInventoryDataForChart();
+            const ctx = document.getElementById('inventoryChart').getContext('2d');
+           
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: inventoryData.labels,
+                    datasets: [{
+                        data: inventoryData.data,
+                        backgroundColor: [
+                            'rgba(52, 152, 219, 0.7)',
+                            'rgba(46, 204, 113, 0.7)',
+                            'rgba(155, 89, 182, 0.7)',
+                            'rgba(243, 156, 18, 0.7)',
+                            'rgba(231, 76, 60, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(52, 152, 219, 1)',
+                            'rgba(46, 204, 113, 1)',
+                            'rgba(155, 89, 182, 1)',
+                            'rgba(243, 156, 18, 1)',
+                            'rgba(231, 76, 60, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `₹${context.raw.toLocaleString()}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Form submissions
+            document.getElementById('productForm').addEventListener('submit', saveProduct);
+            document.getElementById('orderForm').addEventListener('submit', saveOrder);
+            document.getElementById('supplierForm').addEventListener('submit', saveSupplier);
+            document.getElementById('saveSettings').addEventListener('click', saveSettings);
+           
+            // Button clicks
+            addProductBtn.addEventListener('click', addProduct);
+            addOrderBtn.addEventListener('click', addOrder);
+            addSupplierBtn.addEventListener('click', addSupplier);
+            document.getElementById('addOrderItemBtn').addEventListener('click', function() {
+                addOrderItem();
+            });
+           
+            // Confirmation modal
+            confirmActionBtn.addEventListener('click', performDelete);
+            cancelConfirmBtn.addEventListener('click', function() {
+                closeModal(modals.confirm);
+            });
+           
+            // Search functionality
+            document.getElementById('productSearch').addEventListener('input', function() {
+                filterInventory();
+            });
+           
+            document.getElementById('categoryFilter').addEventListener('change', function() {
+                filterInventory();
+            });
+           
+            document.getElementById('stockFilter').addEventListener('change', function() {
+                filterInventory();
+            });
+           
+            document.getElementById('orderSearch').addEventListener('input', function() {
+                filterOrders();
+            });
+           
+            document.getElementById('orderStatusFilter').addEventListener('change', function() {
+                filterOrders();
+            });
+           
+            document.getElementById('orderDateFilter').addEventListener('change', function() {
+                filterOrders();
+            });
+           
+            document.getElementById('supplierSearch').addEventListener('input', function() {
+                filterSuppliers();
+            });
+           
+            document.getElementById('supplierCategoryFilter').addEventListener('change', function() {
+                filterSuppliers();
+            });
+           
+            document.getElementById('supplierStatusFilter').addEventListener('change', function() {
+                filterSuppliers();
+            });
+        });
+
+        // Filter functions
+        function filterInventory() {
+            const searchTerm = document.getElementById('productSearch').value.toLowerCase();
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const stockFilter = document.getElementById('stockFilter').value;
+            const settings = db.getSettings();
+           
+            const criticalThreshold = settings.criticalStockThreshold || 5;
+            const lowThreshold = settings.lowStockThreshold || 10;
+           
+            const products = db.getProducts();
+            const rows = document.getElementById('inventoryBody').querySelectorAll('tr');
+           
+            products.forEach((product, index) => {
+                const row = rows[index];
+                const matchesSearch = product.name.toLowerCase().includes(searchTerm) ||
+                                     product.sku.toLowerCase().includes(searchTerm);
+               
+                const matchesCategory = !categoryFilter || product.category === categoryFilter;
+               
+                let matchesStock = true;
+                if (stockFilter === 'in_stock') {
+                    matchesStock = product.stock > lowThreshold;
+                } else if (stockFilter === 'low_stock') {
+                    matchesStock = product.stock <= lowThreshold && product.stock > 0;
+                } else if (stockFilter === 'out_of_stock') {
+                    matchesStock = product.stock === 0;
+                } else if (stockFilter === 'expiring_soon') {
+                    matchesStock = product.expiryDate && db.getProductsNearExpiry().some(p => p.id === product.id);
+                }
+               
+                if (matchesSearch && matchesCategory && matchesStock) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        function filterOrders() {
+            const searchTerm = document.getElementById('orderSearch').value.toLowerCase();
+            const statusFilter = document.getElementById('orderStatusFilter').value;
+            const dateFilter = document.getElementById('orderDateFilter').value;
+           
+            const orders = db.getOrders();
+            const rows = document.getElementById('ordersBody').querySelectorAll('tr');
+           
+            const today = new Date().toISOString().split('T')[0];
+            const currentWeek = getWeekNumber(new Date());
+            const currentMonth = new Date().getMonth() + 1;
+            const currentQuarter = Math.floor((new Date().getMonth() + 3) / 3);
+           
+            orders.forEach((order, index) => {
+                const row = rows[index];
+                const matchesSearch = order.poNumber.toLowerCase().includes(searchTerm) ||
+                                      order.supplierName.toLowerCase().includes(searchTerm);
+               
+                const matchesStatus = !statusFilter || order.status === statusFilter;
+               
+                let matchesDate = true;
+                if (dateFilter === 'today') {
+                    matchesDate = order.date === today;
+                } else if (dateFilter === 'week') {
+                    const orderWeek = getWeekNumber(new Date(order.date));
+                    matchesDate = orderWeek === currentWeek && new Date(order.date).getFullYear() === new Date().getFullYear();
+                } else if (dateFilter === 'month') {
+                    matchesDate = new Date(order.date).getMonth() + 1 === currentMonth &&
+                                  new Date(order.date).getFullYear() === new Date().getFullYear();
+                } else if (dateFilter === 'quarter') {
+                    const orderQuarter = Math.floor((new Date(order.date).getMonth() + 3) / 3);
+                    matchesDate = orderQuarter === currentQuarter &&
+                                  new Date(order.date).getFullYear() === new Date().getFullYear();
+                }
+               
+                if (matchesSearch && matchesStatus && matchesDate) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        function filterSuppliers() {
+            const searchTerm = document.getElementById('supplierSearch').value.toLowerCase();
+            const categoryFilter = document.getElementById('supplierCategoryFilter').value;
+            const statusFilter = document.getElementById('supplierStatusFilter').value;
+           
+            const suppliers = db.getSuppliers();
+            const rows = document.getElementById('suppliersBody').querySelectorAll('tr');
+           
+            suppliers.forEach((supplier, index) => {
+                const row = rows[index];
+                const matchesSearch = supplier.name.toLowerCase().includes(searchTerm) ||
+                                      supplier.contact.toLowerCase().includes(searchTerm) ||
+                                      supplier.email.toLowerCase().includes(searchTerm);
+               
+                const matchesCategory = !categoryFilter || supplier.category === categoryFilter;
+                const matchesStatus = !statusFilter || supplier.status === statusFilter;
+               
+                if (matchesSearch && matchesCategory && matchesStatus) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Helper function to get week number
+        function getWeekNumber(date) {
+            const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+            const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
+            return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+        }
+    </script>
+</body>
+</html>
